@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{% block title %} Gestión de Empleados {% endblock %}
+
+{% block url %}
+
+{% endblock %}
+
+{% block content %}
+
+
+<main class="mt-5 pt-3">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1 class="text-titles"><i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Gestiona a tus trabajadores</h1>
+        </div>
+        <p>Añadir empleado</p>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Añadir un empleado
+        </button>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="bi bi-table me-2"></i></span> Registro de empleados
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="example" class="table table-striped data-table" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>DNI</th>
+                                    <th>Nombres</th>
+                                    <th>Apellidos</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Dirección</th>
+                                    <th>Rol</th>
+                                    <th>Usuario</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if trabajadores %}
+                                {% for trab in trabajadores %}
+                                <tr>
+                                    <td>{{ trab.dni }}</td>
+                                    <td>{{ trab.nombre }}</td>
+                                    <td>{{ trab.apellido }}</td>
+                                    <td>{{ trab.email }}</td>
+                                    <td>{{ trab.telefono }}</td>
+                                    <td>{{ trab.direccion }}</td>
+                                    <td>{{ trab.rol }}</td>
+                                    <td>{{ trab.username.Usuario }}</td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="form-group col-sm-4">
+                                                <button type="button" class="btn btn-warning btn-editar" data-bs-toggle="modal" data-bs-target="#modalUpdate" onclick="cargarDatos()">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                            </div>
+                                            <div class="form-group col-sm-4">
+                                                <form action="/eliminar_trabajador/" method="GET">
+                                                    <button type="submit" class="btn btn-danger" value="{{ trab.dni }}" name="bntEli">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% endif %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>DNI</th>
+                                    <th>Nombres</th>
+                                    <th>Apellidos</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Dirección</th>
+                                    <th>Rol</th>
+                                    <th>Usuario</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Registrar Usuario-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Añade a un empleado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="/register_trabajador/" method="POST"> {% csrf_token %}
+
+                        <div class="row">
+                            <div class="form-group row">
+
+                                <div class="form-group col-md-6">
+                                    <label for="dni">DNI:</label>
+                                    <input type="text" class="form-control" id="dni" name="dni">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="nombres">Nombres:</label>
+                                    <input type="text" class="form-control" id="nombres" name="nombres">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="apellidos">Apellidos:</label>
+                                    <input type="text" class="form-control" id="apellidos" name="apellidos">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="exampleInputEmail1">Correo electrónico:</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail1" name="correo">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="telefono">Teléfono</label>
+                                    <input type="number" class="form-control" id="telefono" name="telefono">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="direccion">Dirección:</label>
+                                    <input type="text" class="form-control" id="direccion" name="direccion">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Registrar Usuario-->
+
+    <!-- Modal Actualizar Usuario-->
+    <div class="modal fade" id="modalUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Modifica a un empleado</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              
+                <form action="" method="POST" >{% csrf_token %}
+                    <div class="row">
+                        <div class="form-group row">
+                            <div class="form-group col-md-6">
+                                <label for="dni">DNI:</label>
+                                <input type="text" class="form-control" id="dni_up" name="dni" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="nombres_up">Nombres:</label>
+                                <input type="text" class="form-control" id="nombres_up" name="nombres" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="apellidos_up">Apellidos:</label>
+                                <input type="text" class="form-control" id="apellidos_up" name="apellidos">
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="email_up">Correo electrónico:</label>
+                                <input type="email" class="form-control" id="email_up" name="correo">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="telefono_up">Teléfono</label>
+                                <input type="number" class="form-control" id="telefono_up" name="telefono">
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="direccion_up">Dirección:</label>
+                                <input type="text" class="form-control" id="direccion_up" name="direccion">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-success">Guardar</button>
+                    </div>
+                    
+                </form>
+
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- Modal Actualizar Usuario-->
+
+    
+
+</main>
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+
+{% endblock %}

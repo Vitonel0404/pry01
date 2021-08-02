@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %} Gestión de Usuarios {% endblock %}
+
+
+{% block content %}
+<main class="mt-5 pt-3">
+    <div class="container-fluid">
+        <h1>GESTIÓN DE USUARIOS</h1>
+
+        <form action="/buscar_trabajador/" method="GET">
+
+            <div class="row">
+                <div class="form-group">
+                    <div class="form-group col-md-2">
+                        <label for="dni">DNI:</label>
+                        <input type="text" class="form-control" name="dni">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <button type="submit" class="btn btn-primary btn-raised">Buscar para añadir</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <hr>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Nombres</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Último ingreso</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if object_list %}
+                {% for usuarios in object_list %}
+                <tr>
+                    <th scope="row">{{ usuarios.username }}</th>
+                    <td>{{ usuarios.nombres }} {{ usuarios.apellidos }}</td>
+                    <td>{{ usuarios.email }}</td>
+                    <td>{{ usuarios.is_active }}</td>
+                    <td>{{ usuarios.last_login }}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            <tbody>
+        </table>
+
+
+    </div>
+
+</main>
+
+
+
+
+{% endblock %}

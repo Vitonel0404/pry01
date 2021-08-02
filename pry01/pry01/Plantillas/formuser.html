@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %} Inicio {% endblock %}
+
+{% block content %}
+<main class="mt-5 pt-3">
+    <div class="container-fluid">
+        <h2 class="text-titles">Registro de Usuarios</h2>
+        <form action="/registro_usuarios/" method="POST" class="row g-3">{% csrf_token %}
+            {% if trabajador %}
+                
+                    <div class="col-md-4">
+                        <label for="dni_trabajador">Dni:</label>
+                        {% for trab in trabajador %}
+                        <input type="text" class="form-control" id="dni_trabajador" name="dni_trabajador"
+                            value="{{trab.dni}}">
+                        {% endfor%}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="nombres">Nombres:</label>
+                        {% for trab in trabajador %}
+                        <input type="text" class="form-control" id="nombres" name="nombres" value="{{trab.nombre}}">
+                        {% endfor%}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="apellidos">Apellidos:</label>
+                        {% for trab in trabajador %}
+                        <input type="text" class="form-control" id="apellidos" name="apellidos"
+                            value="{{trab.apellido}}">
+                        {% endfor%}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="exampleInputEmail1">Correo electrónico:</label>
+                        {% for trab in trabajador %}
+                        <input type="email" class="form-control" id="exampleInputEmail1" name="email"
+                            value="{{trab.email}}">
+                        {% endfor%}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="username">Usuario:</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="escribe tu usuario">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="password1">Contraseña:</label>
+                        <input type="password" class="form-control" id="password1" name="password1" placeholder="escribe tu contraseña">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="password2">Confirmar Contraseña:</label>
+                        <input type="password" class="form-control" id="password2" name="password2" placeholder="repite tu contraseña">
+                    </div>
+                    <div class="col-md-10">
+                        <label for="exampleInputEmail1">Estado:</label>
+                        <br>
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="usuario_activo">
+                        <label class="form-check-label" for="exampleCheck1">Activo</label>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-success btn-raised" type="submit">Guardar</button>
+                    </div>
+                
+            </div>
+            {% endif %}
+            
+        </form>
+
+    </div>
+</main>
+
+
+
+
+{% endblock %}
